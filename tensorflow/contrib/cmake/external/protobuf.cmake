@@ -20,10 +20,15 @@ set(PROTOBUF_TAG b04e5cba356212e4e8c66c61bbe0c3a20537c5b9)
 
 if(WIN32)
   set(protobuf_STATIC_LIBRARIES 
-    debug ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/$(Configuration)/libprotobufd.lib
-    optimized ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/$(Configuration)/libprotobuf.lib)
-  set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/$(Configuration)/protoc.exe)
-  set(PROTOBUF_ADDITIONAL_CMAKE_OPTIONS	-Dprotobuf_MSVC_STATIC_RUNTIME:BOOL=OFF -A x64)
+    debug ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/libprotobufd.lib
+    optimized ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/libprotobuf.lib)
+  set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/protoc.exe)
+  set(PROTOBUF_GENERATOR_PLATFORM)
+  if (CMAKE_GENERATOR_PLATFORM)
+    set(PROTOBUF_GENERATOR_PLATFORM -A ${CMAKE_GENERATOR_PLATFORM})
+  endif()
+  set(PROTOBUF_ADDITIONAL_CMAKE_OPTIONS	-Dprotobuf_MSVC_STATIC_RUNTIME:BOOL=OFF
+    -G${CMAKE_GENERATOR} ${PROTOBUF_GENERATOR_PLATFORM})
 else()
   set(protobuf_STATIC_LIBRARIES ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/libprotobuf.a)
   set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/protoc)
@@ -38,8 +43,13 @@ ExternalProject_Add(protobuf
     BUILD_IN_SOURCE 1
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf
     CONFIGURE_COMMAND ${CMAKE_COMMAND} cmake/
+        -Dprotobuf_WITH_ZLIB=ON
         -Dprotobuf_BUILD_TESTS=OFF
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_C_FLAGS_RELEASE=${CMAKE_C_FLAGS_RELEASE}
+        -DCMAKE_CXX_FLAGS_RELEASE=${CMAKE_CXX_FLAGS_RELEASE}
+        -DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
         -DZLIB_ROOT=${ZLIB_INSTALL}
         ${PROTOBUF_ADDITIONAL_CMAKE_OPTIONS}
     INSTALL_COMMAND ""
@@ -50,6 +60,9 @@ ExternalProject_Add(protobuf
 			-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=OFF
 		endif()
         -DCMAKE_BUILD_TYPE:STRING=Release
+        -DCMAKE_C_FLAGS_RELEASE:STRING=${CMAKE_C_FLAGS_RELEASE}
+        -DCMAKE_CXX_FLAGS_RELEASE:STRING=${CMAKE_CXX_FLAGS_RELEASE}
+        -DCMAKE_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
         -DZLIB_ROOT:STRING=${ZLIB_INSTALL}
 )

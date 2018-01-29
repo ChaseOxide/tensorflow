@@ -20,7 +20,7 @@ set(snappy_BUILD ${CMAKE_CURRENT_BINARY_DIR}/snappy/src/snappy)
 set(snappy_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/snappy/src/snappy)
 
 if(WIN32)
-    set(snappy_STATIC_LIBRARIES ${snappy_BUILD}/$(Configuration)/snappy.lib)
+    set(snappy_STATIC_LIBRARIES ${snappy_BUILD}/snappy.lib)
 else()
     set(snappy_STATIC_LIBRARIES ${snappy_BUILD}/libsnappy.a)
 endif()
@@ -46,6 +46,9 @@ ExternalProject_Add(snappy
 			-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=OFF
 		endif()
         -DCMAKE_BUILD_TYPE:STRING=Release
+        -DCMAKE_C_FLAGS_RELEASE:STRING=${CMAKE_C_FLAGS_RELEASE}
+        -DCMAKE_CXX_FLAGS_RELEASE:STRING=${CMAKE_CXX_FLAGS_RELEASE}
+        -DCMAKE_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
         -DSNAPPY_BUILD_TESTS:BOOL=OFF
 )

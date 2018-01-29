@@ -23,7 +23,7 @@ set(jsoncpp_LIBRARIES ${jsoncpp_BUILD}/obj/so/libjsoncpp.so)
 set(jsoncpp_INCLUDES ${jsoncpp_BUILD})
 
 if(WIN32)
-  set(jsoncpp_STATIC_LIBRARIES ${jsoncpp_BUILD}/$(Configuration)/jsoncpp.lib)
+  set(jsoncpp_STATIC_LIBRARIES ${jsoncpp_BUILD}/jsoncpp.lib)
 else()
   set(jsoncpp_STATIC_LIBRARIES ${jsoncpp_BUILD}/libjsoncpp.a)
 endif()
@@ -48,6 +48,9 @@ ExternalProject_Add(jsoncpp
    	    	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=OFF
    	 endif()
         -DCMAKE_BUILD_TYPE:STRING=Release
+        -DCMAKE_C_FLAGS_RELEASE:STRING=${CMAKE_C_FLAGS_RELEASE}
+        -DCMAKE_CXX_FLAGS_RELEASE:STRING=${CMAKE_CXX_FLAGS_RELEASE}
+        -DCMAKE_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
 )
 

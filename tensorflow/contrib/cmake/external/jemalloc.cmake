@@ -24,10 +24,14 @@ if (WIN32)
         ${jemalloc_INCLUDE_DIRS} 
         ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/src/jemalloc/include/msvc_compat
     )
-    set(jemalloc_ADDITIONAL_CMAKE_OPTIONS -A x64)
-    set(jemalloc_STATIC_LIBRARIES ${jemalloc_BUILD}/Release/jemalloc.lib)
+    set(jemalloc_GENERATOR_PLATFORM)
+    if (CMAKE_GENERATOR_PLATFORM)
+        set(jemalloc_GENERATOR_PLATFORM -A ${CMAKE_GENERATOR_PLATFORM})
+    endif()
+    set(jemalloc_ADDITIONAL_CMAKE_OPTIONS -G${CMAKE_GENERATOR} ${jemalloc_GENERATOR_PLATFORM})
+    set(jemalloc_STATIC_LIBRARIES ${jemalloc_BUILD}/jemalloc.lib)
 else()
-    set(jemalloc_STATIC_LIBRARIES ${jemalloc_BUILD}/Release/jemalloc.a)
+    set(jemalloc_STATIC_LIBRARIES ${jemalloc_BUILD}/jemalloc.a)
 endif()
 
 ExternalProject_Add(jemalloc
@@ -38,6 +42,8 @@ ExternalProject_Add(jemalloc
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
         -DCMAKE_BUILD_TYPE:STRING=Release
+        -DCMAKE_C_FLAGS_RELEASE:STRING=${CMAKE_C_FLAGS_RELEASE}
+        -DCMAKE_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
         -Dwith-jemalloc-prefix:STRING=jemalloc_
         -Dwithout-export:BOOL=ON

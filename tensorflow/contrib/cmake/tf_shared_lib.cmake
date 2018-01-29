@@ -46,7 +46,7 @@ if(WIN32)
       $<TARGET_FILE:tf_protos_cc>
   )
 
-  set(tensorflow_deffile "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/tensorflow.def")
+  set(tensorflow_deffile "${CMAKE_CURRENT_BINARY_DIR}/tensorflow.def")
   set_source_files_properties(${tensorflow_deffile} PROPERTIES GENERATED TRUE)
 
   add_custom_command(TARGET tensorflow_static POST_BUILD

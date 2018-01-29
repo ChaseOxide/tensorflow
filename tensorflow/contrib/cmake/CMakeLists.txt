@@ -36,7 +36,7 @@ option(tensorflow_ENABLE_SNAPPY_SUPPORT "Enable SNAPPY compression support" ON)
 
 # GPU, CUDA and cuDNN options
 option(tensorflow_ENABLE_GPU "Enable GPU support" OFF)
-set(tensorflow_CUDA_VERSION "9.0" CACHE STRING "CUDA version to build against")
+set(tensorflow_CUDA_VERSION "9.1" CACHE STRING "CUDA version to build against")
 set(tensorflow_CUDNN_VERSION "7" CACHE STRING "cuDNN version to build against")
 
 if(HAIKU)
@@ -275,7 +275,7 @@ if (tensorflow_ENABLE_GPU)
     list(APPEND CMAKE_LIBRARY_PATH "${tensorflow_CUDA_LIBRARY_PATH}/stubs")
   endif (NOT WIN32)
 
-  find_package(CUDA ${tensorflow_CUDA_VERSION} REQUIRED)
+  find_package(CUDA ${tensorflow_CUDA_VERSION} EXACT REQUIRED)
 
   # by default we assume compute cabability 3.5 and 5.2. If you change this change it in
   # CUDA_NVCC_FLAGS and cuda_config.h below

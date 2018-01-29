@@ -21,10 +21,10 @@ set(googletest_TAG ec44c6c1675c25b9827aacd08c02433cccde7780)
 
 if(WIN32)
   set(googletest_STATIC_LIBRARIES
-      ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/$(Configuration)/gtest.lib)
+      ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/gtest.lib)
 else()
   set(googletest_STATIC_LIBRARIES
-      ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/${CMAKE_BUILD_TYPE}/gtest.a)
+      ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/gtest.a)
 endif()
 
 ExternalProject_Add(googletest
@@ -37,6 +37,9 @@ ExternalProject_Add(googletest
     INSTALL_COMMAND ""
     CMAKE_CACHE_ARGS
         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+        -DCMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}:STRING=${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}
+        -DCMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}:STRING=${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}
+        -DCMAKE_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}
         -DBUILD_GMOCK:BOOL=OFF
         -DBUILD_GTEST:BOOL=ON
         -Dgtest_force_shared_crt:BOOL=ON

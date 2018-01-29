@@ -518,7 +518,7 @@ if(WIN32)
 	${nsync_STATIC_LIBRARIES}
     )
 
-    set(pywrap_tensorflow_deffile "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/pywrap_tensorflow.def")
+    set(pywrap_tensorflow_deffile "${CMAKE_CURRENT_BINARY_DIR}/pywrap_tensorflow.def")
     set_source_files_properties(${pywrap_tensorflow_deffile} PROPERTIES GENERATED TRUE)
 
     add_custom_command(TARGET pywrap_tensorflow_internal_static POST_BUILD
@@ -680,9 +680,9 @@ add_custom_command(TARGET tf_python_copy_scripts_to_destination PRE_BUILD
 
 if(WIN32)
   add_custom_command(TARGET tf_python_build_pip_package POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/$(Configuration)/pywrap_tensorflow_internal.dll
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/pywrap_tensorflow_internal.dll
                                      ${CMAKE_CURRENT_BINARY_DIR}/tf_python/tensorflow/python/_pywrap_tensorflow_internal.pyd
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/$(Configuration)/pywrap_tensorflow_internal.lib
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/pywrap_tensorflow_internal.lib
                                      ${CMAKE_CURRENT_BINARY_DIR}/tf_python/tensorflow/python/)
 else()
   add_custom_command(TARGET tf_python_build_pip_package POST_BUILD

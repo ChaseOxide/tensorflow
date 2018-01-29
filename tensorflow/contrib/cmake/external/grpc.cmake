@@ -21,9 +21,9 @@ set(GRPC_TAG 54e8f37e537794c2d814c1604c1282125f64f093)
 
 if(WIN32)
   set(grpc_STATIC_LIBRARIES
-      ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/Release/grpc++_unsecure.lib
-      ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/Release/grpc_unsecure.lib
-      ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/Release/gpr.lib)
+      ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/grpc++_unsecure.lib
+      ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/grpc_unsecure.lib
+      ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/gpr.lib)
 else()
   set(grpc_STATIC_LIBRARIES
       ${CMAKE_CURRENT_BINARY_DIR}/grpc/src/grpc/libgrpc++_unsecure.a
@@ -45,6 +45,9 @@ ExternalProject_Add(grpc
     INSTALL_COMMAND ""
     CMAKE_CACHE_ARGS
         -DCMAKE_BUILD_TYPE:STRING=Release
+        -DCMAKE_C_FLAGS_RELEASE:STRING=${CMAKE_C_FLAGS_RELEASE}
+        -DCMAKE_CXX_FLAGS_RELEASE:STRING=${CMAKE_CXX_FLAGS_RELEASE}
+        -DCMAKE_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
         -DPROTOBUF_INCLUDE_DIRS:STRING=${PROTOBUF_INCLUDE_DIRS}
         -DPROTOBUF_LIBRARIES:STRING=${protobuf_STATIC_LIBRARIES}
